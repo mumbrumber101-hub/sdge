@@ -1,0 +1,74 @@
+name: Prepare catalogue payload size repair
+on:
+  push:
+    branches: [seo-prepare-payload-size-20261112]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Apply verified catalogue resource split
+        env:
+          EXPECTED_HEAD: 6dd3546a28637715e3270d376ba094e1255614c0
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python3 - <<'PYTHON'
+          import sys
+          from pathlib import Path
+          assert not Path('data-payloads').exists()
+          sys.argv=['prepare.py','--source','index.html','--output','.','--manifest','/tmp/seo-payload-manifest.json']
+          from pathlib import Path
+          import re,hashlib,json,gzip,base64,argparse
+          root=Path(__file__).parent
+          parser=argparse.ArgumentParser()
+          parser.add_argument('--source',default='coverage-register/works-live.html')
+          parser.add_argument('--output',default=str(root/'candidate'))
+          parser.add_argument('--manifest',default=str(root/'manifest.json'))
+          args=parser.parse_args()
+          raw=Path(args.source).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='92df67d08ab5f59e66725a0d473f6200ca0cd1c99ec1d76da31241b8b8453fa9','Source changed; rebase before running'
+          source=raw.decode('utf-8')
+          output=Path(args.output);payload_dir=output/'data-payloads';payload_dir.mkdir(parents=True,exist_ok=True)
+          sha=lambda s:hashlib.sha256(s.encode() if isinstance(s,str) else s).hexdigest()
+          records=[]
+          def externalize(m):
+           attrs=m.group(1);text=m.group(2)
+           if 'type="application/gzip"' not in attrs:return m.group()
+           id_=re.search(r'\bid="([^"]+)"',attrs).group(1)
+           assert id_.startswith('payload-')
+           key=id_[8:]; path=f'data-payloads/{key}.gz.b64.txt'
+           assert len(text.encode())<2000000
+           (output/path).write_text(text)
+           decoded=gzip.decompress(base64.b64decode(text))
+           json.loads(decoded)
+           records.append({'key':key,'path':path,'encoded_bytes':len(text.encode()),'sha256':sha(text),'decoded_bytes':len(decoded),'decoded_sha256':sha(decoded)})
+           return f'<script{attrs} data-payload-src="./{path}"></script>'
+          patched=re.sub(r'<script\b([^>]*)>([\s\S]*?)</script>',externalize,source,flags=re.I)
+          before='const b64=node.textContent.replace(/\\s/g,"");'
+          after='let encoded=node.textContent;if(node.dataset.payloadSrc){const response=await fetch(node.dataset.payloadSrc);if(!response.ok)throw new Error(`Catalogue data could not be loaded: ${key} (${response.status})`);encoded=await response.text()}const b64=encoded.replace(/\\s/g,"");'
+          assert patched.count(before)==1
+          patched=patched.replace(before,after,1)
+          assert len(records)==49
+          assert len(patched.encode())<2000000
+          (output/'index.html').write_text(patched)
+          manifest={'source_sha256':sha(source),'candidate_sha256':sha(patched),'source_bytes':len(source.encode()),'candidate_bytes':len(patched.encode()),'removed_bytes':len(source.encode())-len(patched.encode()),'source_github_blob':hashlib.sha1(b'blob '+str(len(source.encode())).encode()+b'\0'+source.encode()).hexdigest(),'payloads':records,'loader_before':before,'loader_after':after,'note':'No title index changes. Live titles.html already exposes all408 work families.'}
+          Path(args.manifest).write_text(json.dumps(manifest,indent=2))
+          print(json.dumps({k:v for k,v in manifest.items() if k!='payloads'},indent=2))
+          
+          assert hashlib.sha256(Path('index.html').read_bytes()).hexdigest()=='0960f95744ca044a5ab78a7f08517219d6f82a2294775da1a83f6c18cf468ade'
+          assert len(list(Path('data-payloads').iterdir()))==49
+          PYTHON
+          test "$(git diff --name-only)" = "index.html"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html data-payloads
+          git diff --cached --stat
+          git commit -m "Keep catalogue HTML within crawler limits and load unchanged data separately"
+          git push origin HEAD:refs/heads/seo-candidate-payload-size-20261112
+          git rev-parse HEAD
