@@ -1,0 +1,43 @@
+name: Prepare approved catalogue SEO repair
+on:
+  push:
+    branches: [seo-prepare-catalogue-20261112]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Apply exact validated patch
+        env:
+          EXPECTED_HEAD: cc3caad55e269ee339cc5e1d5a366fe7c69ea2fd
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python3 - <<'PYTHON'
+          import base64, hashlib, json, zlib
+          from pathlib import Path
+          p = Path('index.html')
+          raw = p.read_bytes()
+          assert hashlib.sha256(raw).hexdigest() == 'a10ca3a779524ba501b2932f0b3cb02eba9bd9dfcec7745a5385e636112f0489'
+          text = raw.decode('utf-8')
+          replacements = json.loads(zlib.decompress(base64.b64decode('eNrtXXtv2zgS/ypEDrjuAUljyfJDvVwPaZpHF80DcbrBYrs40BJjC5VJL0UlNQ733Y+kZCd2TJmyFNpK9EfqWpY0I/E3nCeHf/yxg6JdALEPGIU4CiELCI7ef9/5+B0fsICF6OP1e3D4HnyFd3eIsskHcAiOIIMhGcQIkDvAhgjcEvojOthPzv+Od3Zf4q4HYYB/AIrCf33f8SAmOPBg+H0HDCm644eGjI2jD/v7o3jUp/wPUath7Q3j/vtBwMRHQPYjf4D2Ey5GiEEwpmQsyPPLyeADm4wRv59HMEOY8WMPqB8FDCkvED/+B8PR/FWHlAb3CEAGjmHEEH0IsPoW8uHmLtd9Mcpb+ijyaDAWr3yeL/7/0ThEDIEIQeoNYT9EwFu8+YO4ufiyyIhklQ/rOO6H/NXLId2d3pN/AT5kGcO+hNOYhnMcrjOE4vXzS9lDwPi7/uBB6s/dM4pHI0gnyRWYJK/m40HEJhxUfwsJ9AM8+K8fROMQTj5wVKH/Hewnvx7sz87nmP5z94+dhviJEjzgNxhDDAJfYlG+wT2PxJjthbCP+FN9fHyvFHmE+lwmnEZX/3oxDOAOjoIwQJL2Ph8c6H88YH3iT+avFEf4JVxUxP/Epxha/ukH9x8P+D/AC2EU8SvGcICoOPWRvDg0o3rFvwCLc8l/nr8SenIwxbX9mDE+3NNf+kzgLLkXRfd74obfd/jzMsq5Haa0pmdHdI/gULB7xJEDKZoS2xen8r/b2YNPZseuHiEn4fUEdMnbnZ158wR4s4Mn8m7pqY+Hr+V3gMn75NC+YFjjNTMqoA75gFEJPRojeZhfFeBxzICYSMR1Q+T96JOfAo/p03vJM+8lR+VdJIm22263+BFIA5gMBj+YviBwI0QeDtK3vy/oiL+FYUiebk9OklzI8N50anlGZWFEBNKSk0E0JJQJUYnthuU9oSu++7ORSig/smK5LXdhlMWAyWmvd3Z5fXPy5ejmy+UF+B43Gv3O8+EDgmv0SGD6iIp7XpC5CYbfhEH+y+x6xWWNZAqb4mDKTQPc8YEMBhggP0iBs8DHU0HoQz4DRc/eojwMBCT4T3MYTu8lZVHBmTXPWfZ7CPgE9/EGyMGcO1Pi90XA2bEtFTgPfTgCZ9DnKKUIgU+UcAGixZEqSeoiVcXEKti2Gy8C26dwCSEexGKK9YbB+Dls5n7mv36OmTdciuPFM08owpqnniI6gljr1Cv+WmOutSKkBVxnuUg5mxep1loixVFnSKTabVslUj3IYurDCfidxOBzgEqY9W19WXpGfUNCVM/92XO/bQyoDRVQP3OUpF7DaQi9IDEtC0K1oQ/VJfSzwforxDF3BkAN2g2BtmEEtK1us2WrrWlK4sEQXAoTARxPUFFbJaWmb1U/o58N2hPEneEXRa0ReyWHEfKF+1uB5rm/Qv6rrrnSWi5Q7uYFqr2GQEngGdMCjkqgEiD3An8WQjonIvRUWBM4+kKl4CFbsM5FEKzWBZvSBY4x6DZV0P1K8ADcIMSGJcC1qQ/XJ3SzIXrIfbGI1RjdFEabpjDaaqsw+gnBmAV3cQg+UwRHZdjYgpguVJ+Tz0ZsD40ZEqH7GrQbAm2rbczIbmSFrHvBT3AS4AGiMp10E4xQCZZ2I1/8ehkTGwdwheODL2aat5eLobUFcthVsAZgyBDFkCFtc71hTJ8os0nn3inBwQCG7yKRSB6VoE5y5JRm1OVXN2UhWyIvyH2tUTaqUVrGNIoyz9TD8d1dWEqwJkdiaUY1G6GfkVerDOMqo7O10ZzumtEcQ8mnTtdSuhs3dAIYAddoJBFdVDskpLQttgXiFZa6eQHJMys/2hcbx7G9jr4QQ24Gx00rA8fc+P82CCegh2BRECd08rgdM8ork6dWddVFzloBeznM7c3DvLkOzAUoTFnznW4WzK9IGDD+gQgHh/Byr2I/6MfYD2Bx416QzoP8LGa0k7NWbeWbt/I7XWPVZErn9AtOsvmQ+giXUEOWwzOdJ62ZObJei7H/lmZugQtTDq3tKgsnw1ACLpkpi7u1gpJ2veQ87RU5qDENwq0E+xElfM7WdC2rVanw6nxb2zUjcq7dyPQJblHAJ/iIicBj6BcVu4RaroL6eforTKIYo1elZvII0xsqPJY4MiUfap/5MCSTqLhI5HGWE5K6RRC1HLx6OTDkVDtWw1aWiF5z/68f0KLaIaWhKwozqvpRzwrLQxHLqcyolKIktF3NklAJOTMC1HDVNUs9dM8lQpTn3yBKSdEsQkpLO2m3SF3TmbfrzJ0xGQ2DSI/d6ziKdJWhqlBjCzIp7jrCLGBvLJOiLJKVdX8lpFBy1McmJPV8I/st2oSZ5/YeOMyjYcXtx44q6Jiv6koiz5RrpV4m3SM+GcneBadkRCiFw12unX7CEtytPAul1WzoG521mqz9tUd/zdCC6ZbbbHWy4nqy8YeHsI8wAzfBoHgPgpRknuDeMib0F/c5Wy1Yb6iERY68qQyRozS8LuBotpyth+GPEpJETg4j7Dl5zTyRUyuIza5n7VR2PatjylRz1QvEz6HP/3Bh7eHmWRU+JZotYpceI6kV5ryJyoPmcoA3Nw9wZy294hpasN1yG7ZSr9wOIXsXyXl9Osff8EPghjzgfxeGvSSsC3vBynQliIKftycRtdoxq3YEZM2E2axmW+nEXAUDEGAAwRX5gSZF420JJV0xXKCtHwtw6vq36tW/CWwYCyvbWU47t3jAQ8CGiY8x5jcOkV9GT56Uch7fPYOXCsvDC5XIra2w3lI3QYFBU8GxjpO5QgDiAFzxkUGseFCs4+RcEfCEuPYKgNa2CVIOxPf4j7r5l9elWiQ6zEDedlrKRTG9kDyAmxhFoo3lRTAYFkZ9Qk07y/KcvmborFX7MIZKEK4JZ0H3zgtFCKVlXy2F+FutLVhFtNYEIATFzATgNLrKtRWnXPZYIHpsldB0JiGkK/vzpFdVHk1qoTcp9Hlk093ehjRWYx3RFDg2JZqum7HC7zKm4FNIvB/FJdN1cy3we6S8qrYorLpkVk3cOttbu9ddT9pcY9KmDrKckcHeJxRyNJ8RXDiqmJLSFbhF4jn6rtUqsY7lt9cTO1MxF8dqKsXugj8BOIuxT5EPTinE/qiUbVFSotoVHEo29IuS2nVEcxvFdotL3a1GSf0SBdhNybKjzMudktBHWJT29SFmxQXYyZGXW6Ct5U2265Rc9eKmAham4qZN9V5eI9GXXOS/zmDAp/9jSNlwVLgRS0pTe0mwigvdVcK1yiqShFM04u1u3YoQ3YBk01CFetNtttWlvJSSB/AbDMPiXlhCSL+M9ynpHD5Yu/bBNrZkOVfqYj1rbAtqKK11OpVJ+JvSlY5SV17RQOwrDI79ON2YNi2VP+LPT0lQXGc6OXTmSm70S1jadcyziGPmVKWfwNpumUCmscUxK8vHbocEXKB7jt1bWEJzcGeNqrF5FlZ2fO3UerX09ZOtiq6fFIAzJkuZu7WcEdGuNemBeUQoLtz6O6WYR5iW8KBdMFZL1YZbE27hTi3aMmhoW1LbVm/LcjOMI3CLwAmNI0a5MgZHQ0hDNIIDXLiEJSGsL4pZrOinDjp1HKZKqYN2NbvkSHAbkt+mq9Shsu/5RLbWOOJiQ0Zl+4OStrY/uIobvd46ndoXfIE9zSobSuUQNCZo6nxcgPEE3FI4HiNfrFqT63ViXIKA5cnMqbjQTVLUovUSZSsVbdsowWdEtOy227A6yqjK4R1D9EEA7JevQnmkWuOUIsi4e0YjFP2joKDNONDOB+rwpL1KXCl3x73e4e+g3jQkB2zToTSUXuu2lek1btWgMJLmzmdKRsjnZ6FoFxxxp6Vwtk3S1QVrJifFQVoHM+oGwCuyYxyuZhoA23ZDGc1QTdRFGwEnNHWFUclFLYhbvx5vvaS2VdGktgS2se23MhMB30IWjGTQT0hMTFEJ23DlzAM8Z0F/g2g9ia3rG41vudUwBu+murPbpI/Ar4RPStJCkwGxgE1KQHgzT6s3BRcrM8fdurS3ktA3012q026po9MwYhz+ESuc1k2ofDzwxC6fS7AeEjwQRvgjwYN9cW5ORF9c/nb8dWtzQ3UdRLl1EAJURmTEbau1Q28MPZnqxKxwjW5CZ6WUzJGshpxUyQHJ04intbUCtU4YQODPjNJp2lZHT6TAPrgSScnDPuGk5KqOorooJZ5PzpbwsZboXZ5ffPn0rVeHjHPN9HLITGURGx31wvgH4e1OwCm8R+ALA59g8X4UCUH95fHLWNAvr6m9gQou9BMQMWXpZNZOXyN0F4ngaBkTcUJs5TT8nK5y4p1tylZFyyePIf+68C2AYGpyV+P73DulsY/ou4i7oPQehVHxmT3PTp5T+tPO5lMm9JoObd28ngfOr2wjGDHuxurzlf0sLzECkAFYSju7hJAulOdJ64fhu3V50wtUDnYqWjkoMGcm/N917IxtwoIoaYMDjrh5we9UNPCfUNNPbT2j/yYEavPR0vbW1nh0y1mUKZFoKMvgKHs7npCY2/RiTWQkXmbhTIPjajgVC0SzQjnu1vgSb9YBFoNqBKeW0+p0rbZaF3Cr5pzwMb4K4SAualXNqOnrggX6K5O/bl24WloUMh0uI0Bs2m6zYykzs4cYRgxGAQSf0QgxfopfuExuRlK7xHopE/qhSCU2ry6Pz2to5oFmOnbmoNlws8KEPYIxYiJeJ/UsQhiIlq6lILTh5isLU/JSA3VTQG0Y6nHcbnWUnXiOwuDuLko0+lcYD4bILxojSchp1/wvYWBVq8Y0uu3WWz5vSaRPDLmhCsV2VxnpOyL4LhjEdK6H0wURDk5vSEqoxZW0tYG9ipsc3eTcCm/olKN74uvasFbixYy7ZtvdZkvLW/srRuCXc678004x4njRRYlT8mu5b8sZ0u+4Vnt2JXp2ciBNpWyayon8hJLBIx5iLIaieOammWPyXsrBqihDp1HnbV5n978125M1zUz/dstRh5VfajeFlOjKCLOSfkasWS1IR5dfvx5vchXSFvcQ61azhZgEkplFt5ajbjJ9jFnAP0R+8QrRO+QxcDSkk0j0AirqOaSEdZVPNiu6Tf2qrI3qHZI1Vr0KUBmRm27Dbimr1M84TKOpe3sOi9ppKS3tMuBF6huWjtq7UANWDq0Zg0gsieoqN/W+RvcBehCo+ftfMWH/PBQL7YKfADHRaYSMIaMo+QX0J+CURJ7oV7ULIEjmJfCJkB/gSryMaMitGj4aoOcNCQnBt0gUnIVFV0DNHkBXDh4fSX7vLnukpKBy/UfSThSoZeuN++R2OfUqKToM7e7UVO8UfB34SFY3YnBUeOZPKWkjfp623hbhtU30yluCCwwZ8iVa6q2gjgi34HHM51EOnQv0k4Hr4hv2phRzpB+W8aDVurQWk9e+n7UEk7HafKXTfRn64IQQxv+hA8JKqM7P4WYvEq9FY1ONF5zqbkBhaDMly3UzK40Ow3DvkO1dYq8MJzwll6e8SDAAnzCgtVpr+4QpR2nxKyvhEENuCstddUGnbCsAQQ95VPiulHjED0JUHNDdPBWdKi40+1O/HiXxlmZzgRFTbdYsO8N34FALofcuAj0GWYx2AaHglg9LJFqlnwUROEPQL952zbJzeRMJV9NVuZmsaS/M2j5BebvLdSUizOC/3c22ZmRNqPhXwKTwOsOEWh5jZoF+heFc3J6xK4pmMerP0bzP+sSfiE/YD9GU7tMHGPO3R2f8SwSJQwlOZW8+/iCWiLTPTP+nl0OPTVfvLUC1z7hZnt6Qovs9cVcB1CASrPg7f/75fwCAxa4=')))
+          for before, after in replacements:
+              assert text.count(before) == 1
+              text = text.replace(before, after, 1)
+          result = text.encode('utf-8')
+          assert hashlib.sha256(result).hexdigest() == '2ef93f632f2f92eb12975c0cea7ae5b47dc65e7aec49424d3829af72de25ca19'
+          p.write_bytes(result)
+          print('Verified approved catalogue patch, 75 initial work families')
+          PYTHON
+          test "$(git diff --name-only)" = "index.html"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Expose catalogue entries in initial HTML and add SEO metadata"
+          git push origin HEAD:refs/heads/seo-candidate-catalogue-20261112
+          git rev-parse HEAD
