@@ -100,6 +100,115 @@ dialog.glossary-popover .dialog-head:has(.glossary-copy-link) + .dialog-body {
 }
 </style>
 <style id="catalogue-title-index-style">.catalog-modes .catalogue-title-index{margin-left:auto;align-self:center;padding:10px 12px 12px;font:600 12px/1 var(--sans);color:var(--red2);text-underline-offset:3px}.catalog-modes .catalogue-title-index:hover{color:var(--ink)}.catalog-modes .catalogue-title-index:focus-visible{outline:2px solid var(--red);outline-offset:2px}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Poppins:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style id="easterwine-editorial-shell">
+/* Easterwine reference-page typography and surfaces. */
+:root{--paper:#F8F8F4;--paper2:#F0F2EC;--card:#F8F8F4;--ink:#20261F;--muted:#565E55;--line:#D9DDD5;--line2:#879180;--red:#356269;--red2:#356269;--wash:#F0F2EC;--shadow:0 12px 36px #20261F24;--sans:Poppins,Arial,sans-serif;--serif:"EB Garamond",Georgia,serif}
+body{font-family:var(--sans);font-size:15px;line-height:1.55}
+h1,h2,h3,h4,.record-link,.work-title,.completion-title button,.completion-date,.year-label{font-family:var(--serif)}
+button,input,select,textarea{font-family:var(--sans)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.loading-card{border-top-width:1px}
+.loading h1{font-size:44px;line-height:1.12}
+.masthead{padding:0 20px;background:var(--paper);border-bottom:1px solid var(--line)}
+.masthead-top{min-height:104px;padding:20px 0}
+.monogram{width:56px;height:56px;font-weight:500;letter-spacing:0;border-color:var(--line2)}
+html.aae-embedded .masthead{position:sticky;top:0;z-index:10;padding-top:14px}
+html.aae-embedded .masthead-top{display:none}
+html.aae-embedded .filters,html.aae-embedded .aside-card{top:90px}
+html.aae-embedded .completion-entry[id]{scroll-margin-top:90px}
+.nav{gap:6px;flex-wrap:wrap;overflow:visible;border-top:0;padding:0 0 14px}
+.nav button,.nav button:first-child{min-height:44px;padding:10px 16px;border:1px solid var(--line2);border-radius:2px;font-size:14px;font-weight:400;line-height:1.35;letter-spacing:0;text-transform:none}
+.nav button.active{background:var(--red);border-color:var(--red);color:var(--paper)}
+.nav button:hover{background:#EAF0EA;color:var(--ink)}
+.nav button.active:hover{background:var(--red);color:var(--paper)}
+.shell{padding:24px 20px 48px}
+.view-head{gap:24px;padding-bottom:20px;margin-bottom:24px;border-color:var(--line)}
+.view-head h2{font-size:34px;line-height:1.12;letter-spacing:-.02em}
+.view-summary{font:16px/1.6 var(--sans);max-width:760px}
+.eyebrow{font-size:12px;font-weight:500;line-height:1.4;letter-spacing:.03em;text-transform:none}
+.archive-source{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin-bottom:18px;background:transparent}
+.archive-source ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.archive-source li{font-size:13px;line-height:1.5;min-width:0}
+.archive-source a{font-weight:500;overflow-wrap:anywhere}
+.archive-source b{font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0;text-transform:none;margin-bottom:3px}
+.catalog-modes{align-items:stretch;gap:4px;margin-bottom:20px}
+.catalog-modes button{min-height:44px;padding:10px 14px;border-bottom-width:2px;font-size:14px;font-weight:400;line-height:1.35}
+.catalog-modes .catalogue-title-index{display:inline-flex;align-items:center;min-height:44px;padding:8px 0 8px 12px;font-size:13px;font-weight:400;line-height:1.4}
+.catalog-layout{grid-template-columns:240px minmax(0,1fr);gap:24px}
+.filters{border-top:1px solid var(--line);padding:16px;background:var(--paper2)}
+.filters h3{font-family:var(--sans);font-size:14px;font-weight:500;line-height:1.4;letter-spacing:0;text-transform:none;margin-bottom:18px}
+.field span{font-size:12px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none}
+.field input,.field select,.completion-controls select,.extension-toolbar input,.extension-toolbar select,.annotation-editor select,.annotation-text{min-height:44px;background:var(--card);border-color:var(--line2);border-radius:2px;font-size:14px;line-height:1.4}
+.check{font-size:13px;line-height:1.5}
+.btn{min-height:44px;padding:9px 12px;border-radius:2px;font-size:13px;font-weight:400;line-height:1.35;letter-spacing:0;text-transform:none}
+.btn:hover{background:#EAF0EA;border-color:var(--line2)}
+.btn.primary,.btn.red{background:var(--red);border-color:var(--red);color:var(--paper)}
+.table-wrap,.timeline-list,.aside-card,.completion-controls,.panel,.evidence,.extension-toolbar{border-top-width:1px;border-top-color:var(--line)}
+th{font-size:11px;font-weight:500;line-height:1.4;letter-spacing:.02em;text-transform:none;color:var(--muted);border-bottom-color:var(--line)}
+td{font-size:14px;line-height:1.5}
+.record-link{font-size:21px;font-weight:400;line-height:1.2}
+.subline{font-size:12px;line-height:1.5}
+.id{font-size:10px;font-weight:400;line-height:1.4;letter-spacing:0}
+.badge,.language-chip,.quality-status,.evidence-pill,.source-chip{font-size:10px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none}
+.badge.core{border-color:#B6C5BD;background:#EAF0EA;color:var(--red)}
+.pager{font-size:13px;line-height:1.4}
+.completion-controls label,.extension-toolbar label{font-size:12px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none}
+.completion-title button{font-size:21px;font-weight:400;line-height:1.2}
+.completion-date{font-size:18px;font-weight:400;line-height:1.35}
+.completion-title small,.completion-notes,.manuscript-summary-entry small,.manuscript-summary-entry p{font-size:13px;line-height:1.55}
+.completion-notes b,.completion-status{font-size:11px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none}
+.completion-year h3{border-bottom:1px solid var(--line);font-size:30px;line-height:1.2}
+.archive-intro{border-top:1px solid var(--line);border-bottom-color:var(--line)}
+.archive-intro p:last-child{font-size:14px;line-height:1.6}
+.year-item button{font-size:18px;font-weight:400;line-height:1.3}
+.year-item span{font-size:11px;line-height:1.5;text-transform:none}
+.aside-card p,.evidence p,.research-note{font-size:14px;line-height:1.6}
+.research-addon{background:var(--paper)}
+.research-match{font-size:13px;line-height:1.55}
+.research-match mark{background:#E4E9DB}
+.synopsis-text p,.syn p{font:16px/1.65 var(--sans)}
+.footer{padding:22px 20px;font-size:12px;line-height:1.6;border-color:var(--line)}
+dialog[open]{display:flex;flex-direction:column}
+.dialog-head{flex:none;background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line);padding:20px 64px 16px 22px}
+#detail.local-detail .dialog-head{padding:20px 64px 16px 22px}
+.dialog-head h2{font-size:34px;line-height:1.15;letter-spacing:-.02em}
+.dialog-head .eyebrow{color:var(--muted)}
+.close,dialog.glossary-popover .close{width:44px;height:44px;right:12px;top:12px;border-color:var(--line2);border-radius:2px;color:var(--ink);font-size:24px}
+.dialog-tools .btn,.detail-nav-button{min-height:44px;background:var(--paper);color:var(--ink);border-color:var(--line2);border-radius:2px;font-size:12px;font-weight:400;line-height:1.35;letter-spacing:0;text-transform:none}
+.detail-nav-button{padding:8px 10px}
+.dialog-body,#detail.local-detail .dialog-body,dialog.glossary-popover .dialog-body{flex:1;min-height:0;overflow:auto;max-height:none!important}
+dialog.glossary-popover .dialog-head{border-bottom:1px solid var(--line);padding-right:64px}
+.section h3,.glossary-section h3{font-size:13px;font-weight:500;line-height:1.4;letter-spacing:.02em;text-transform:none}
+.section p,.section li,.glossary-list li,.glossary-para{font-size:14px;line-height:1.6}
+.datum b{font-size:11px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none}
+.datum span,.detail-table td{font-size:14px;line-height:1.5}
+.compare-bar{background:var(--paper);color:var(--ink);border:1px solid var(--line2)}
+@media(max-width:920px){
+ .catalog-layout{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+ .masthead{padding-left:14px;padding-right:14px}
+ .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;align-items:stretch;gap:6px}
+ .nav button{font-size:13px;padding:10px 8px;white-space:normal;overflow-wrap:normal}
+ .shell{padding:20px 14px 36px}
+ .archive-source ul{grid-template-columns:1fr;gap:14px}
+ .archive-source li{font-size:14px}
+ .archive-source b{font-size:12px}
+ .catalog-modes{flex-wrap:wrap;overflow:visible}
+ .catalog-modes button{padding:9px 10px}
+ .catalog-modes .catalogue-title-index{font-size:12px;padding-left:8px}
+ .field input,.field select,.extension-toolbar input,.extension-toolbar select{font-size:16px}
+ .view-head h2{font-size:30px}
+ .completion-controls label{flex-wrap:wrap}
+ .completion-controls select{min-width:0;max-width:100%}
+ .dialog-head h2{font-size:28px}
+ html.aae-embedded .completion-entry[id],html.aae-embedded .open-title,html.aae-embedded .open-publication{scroll-margin-top:146px}
+}
+</style>
+<script>if(window.self!==window.top)document.documentElement.classList.add("aae-embedded");</script>
 </head>
 <body>
 <div class="loading" id="loading"><div class="loading-card"><p class="eyebrow">A catalogue of the works of</p><h1>R. A. Lafferty</h1><p id="loading-message">Opening the catalogue and its connected records.</p><div class="progress"><span></span></div></div></div>
