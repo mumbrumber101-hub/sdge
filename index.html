@@ -210,6 +210,138 @@ dialog.glossary-popover .dialog-head{border-bottom:1px solid var(--line);padding
 }
 </style>
 <script>if(window.self!==window.top)document.documentElement.classList.add("aae-embedded");</script>
+<style id="catalogue-spacious-layout">
+/* Catalogue spacing: full-width controls and responsive records. */
+.masthead{padding-left:clamp(20px,3vw,36px);padding-right:clamp(20px,3vw,36px)}
+.nav{gap:10px;padding-bottom:18px}
+.nav button,.nav button:first-child{padding:12px 18px}
+.shell{padding:32px clamp(20px,3vw,36px) 56px;max-width:1440px}
+.archive-source{padding:18px 0;margin-bottom:28px}
+.archive-source ul{gap:18px 36px}
+.catalog-modes{gap:12px;margin-bottom:28px}
+.catalog-modes button{padding:12px 18px}
+.catalog-layout{grid-template-columns:minmax(0,1fr);gap:28px}
+.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 24px;position:static;align-items:end;padding:24px}
+.filters h3{grid-column:1/-1;margin:0;font-size:15px}
+.filters .field{margin:0;min-width:0}
+.filters .field:first-of-type{grid-column:span 2}
+.filters .field span{margin-bottom:8px;font-size:13px}
+.filters .check{margin:0;min-height:44px}
+.filters .actions{gap:10px;min-height:44px;align-items:end}
+.filters .scope-note{grid-column:1/-1;margin:0}
+#catalog-head th{padding:16px 16px;font-size:12px;line-height:1.5}
+#catalog-body td{padding:20px 16px;line-height:1.6}
+#catalog-body .record-link{font-size:23px;line-height:1.25}
+#catalog-body .subline{font-size:13px;line-height:1.6;margin-top:7px}
+#catalog-body .language-chips,#catalog-body .badges{gap:6px}
+#catalog-body .badge,#catalog-body .language-chip{padding:5px 7px;line-height:1.45}
+#catalog-body .compare-box{width:18px;height:18px;accent-color:var(--red)}
+#view-catalog .pager{gap:20px;padding:24px 0}
+.completion-entry{padding:22px 12px;gap:24px}
+.completion-notes p{margin-bottom:10px}
+.year-item{padding-top:14px;padding-bottom:14px;gap:18px}
+@media(max-width:1050px){
+ .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .filters .field:first-of-type{grid-column:1/-1}
+ #view-catalog .catalog-layout>section>.table-wrap{border-top:0;overflow:visible;background:transparent}
+ #view-catalog .catalog-layout>section>.table-wrap>table{display:block;width:100%;min-width:0}
+ #catalog-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+ #catalog-body{display:grid;gap:18px}
+ #catalog-body>tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px;position:relative;padding:24px;border:1px solid var(--line);background:var(--card)}
+ #catalog-body td{display:block;min-width:0;border:0;padding:0;overflow-wrap:break-word}
+ #catalog-body td::before{display:block;margin-bottom:7px;color:var(--muted);font:400 12px/1.4 var(--sans)}
+ #catalog-body .record-link{font-size:25px;line-height:1.25}
+ #catalog-body td[colspan]{grid-column:1/-1}
+ #catalog-body td[colspan]::before{content:none!important}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:first-child:not([colspan]),
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:first-child:not([colspan]){position:absolute;right:24px;top:26px}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:nth-child(2),
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:nth-child(2){grid-column:1/-1;padding-right:32px}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:nth-child(3)::before{content:"Publication and completion"}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:nth-child(4)::before{content:"Translations"}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:nth-child(5)::before{content:"Family records"}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:nth-child(6)::before{content:"Record number"}
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:nth-child(3)::before{content:"Publication record"}
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:nth-child(4)::before{content:"Completion record"}
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:nth-child(5)::before{content:"Relationship"}
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:nth-child(6)::before{content:"Record number"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:first-child:not([colspan]),
+ #view-catalog:has([data-mode="people"].active) #catalog-body td:first-child:not([colspan]){grid-column:1/-1}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(2)::before{content:"Date and format"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(3)::before{content:"Publisher"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(4)::before{content:"Contents"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(5)::before{content:"Links"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(6)::before{content:"Links"}
+ #view-catalog:has([data-mode="publications"].active) #catalog-body td:nth-child(6)::before{content:"Record number"}
+ .completion-entry{grid-template-columns:120px minmax(0,1fr);padding:24px 0;gap:14px 24px}
+ .completion-date{grid-column:1;grid-row:1}
+ .completion-title{grid-column:2}
+ .completion-notes,.completion-status{grid-column:2}
+ .timeline{grid-template-columns:minmax(0,1fr)}
+ .timeline .aside-card{position:static}
+}
+@media(max-width:600px){
+ .masthead{padding-left:16px;padding-right:16px}
+ .shell{padding:24px 16px 40px}
+ .nav{gap:8px}
+ .nav button,.nav button:first-child{padding:12px 8px}
+ .archive-source{padding:18px 0;margin-bottom:24px}
+ .catalog-modes{gap:6px;margin-bottom:24px}
+ .catalog-modes button{padding:12px 10px}
+ .filters{padding:20px;gap:18px;grid-template-columns:minmax(0,1fr)}
+ .filters .field:first-of-type{grid-column:auto}
+ #catalog-body{gap:16px}
+ #catalog-body>tr{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px 20px}
+ #catalog-body .record-link{font-size:24px}
+ #catalog-body td{grid-column:1!important}
+ #view-catalog:has([data-mode="works"].active) #catalog-body td:first-child:not([colspan]),
+ #view-catalog:has([data-mode="titles"].active) #catalog-body td:first-child:not([colspan]){right:20px;top:24px}
+ .completion-entry{grid-template-columns:minmax(0,1fr);gap:12px;padding:22px 0}
+ .completion-date,.completion-title,.completion-notes,.completion-status{grid-column:1;grid-row:auto}
+ .year-item{grid-template-columns:minmax(0,1fr);gap:8px}
+ .year-item span:last-child{display:block}
+ #view-catalog .pager{flex-wrap:wrap}
+}
+
+.completion-controls input{min-height:44px;min-width:0;max-width:100%;padding:10px 12px;border:1px solid var(--line2);border-radius:2px;background:var(--card);font:14px/1.4 var(--sans)}
+@media(min-width:1051px){
+ #view-catalog:has([data-mode="works"].active) .catalog-layout>section>.table-wrap>table{table-layout:fixed}
+ #view-catalog:has([data-mode="works"].active) #catalog-head th:first-child{width:52px}
+ #view-catalog:has([data-mode="works"].active) #catalog-head th:nth-child(2){width:30%}
+ #view-catalog:has([data-mode="works"].active) #catalog-head th:nth-child(3){width:22%}
+ #view-catalog:has([data-mode="works"].active) #catalog-head th:nth-child(4){width:22%}
+ #view-catalog:has([data-mode="works"].active) #catalog-head th:nth-child(6){width:90px}
+}
+@media(max-width:620px){.completion-controls input{font-size:16px;width:100%}}
+
+.timeline{grid-template-columns:minmax(0,1fr)}
+.completion-controls,.extension-toolbar{padding:22px;gap:18px 24px}
+.completion-controls label,.extension-toolbar label{min-width:0}
+#materials-content td{padding:20px 16px;line-height:1.6}
+#materials-content th{padding:16px;font-size:12px;line-height:1.5}
+#materials-content .record-link{font-size:23px;line-height:1.25}
+#materials-content .subline{font-size:13px;line-height:1.6;margin-top:7px}
+@media(max-width:800px){
+ #materials-content .table-wrap{overflow:visible;border-top:0}
+ #materials-content table{display:block;min-width:0;width:100%}
+ #materials-content thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+ #materials-content tbody{display:grid;gap:18px}
+ #materials-content tr{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding:22px 20px;border:1px solid var(--line)}
+ #materials-content td{display:block;min-width:0;border:0;padding:0;overflow-wrap:break-word}
+ #materials-content td::before{display:block;margin-bottom:7px;color:var(--muted);font:400 12px/1.4 var(--sans)}
+ #view-materials:has([data-material-view="reviews"].active) td:nth-child(2)::before{content:"Reviewer"}
+ #view-materials:has([data-material-view="reviews"].active) td:nth-child(3)::before{content:"Review records"}
+ #view-materials:has([data-material-view="reviews"].active) td:nth-child(4)::before{content:"Publication"}
+ #view-materials:has([data-material-view="reviewsBy"].active) td:nth-child(2)::before{content:"Review by Lafferty"}
+ #view-materials:has([data-material-view="reviewsBy"].active) td:nth-child(3)::before{content:"Publication"}
+}
+@media(max-width:760px){
+ .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:8px}
+ .nav button{white-space:normal;overflow-wrap:normal}
+ html.aae-embedded .completion-entry[id],html.aae-embedded .open-title,html.aae-embedded .open-publication{scroll-margin-top:156px}
+}
+
+</style>
 </head>
 <body>
 <div class="loading" id="loading"><div class="loading-card"><p class="eyebrow">A catalogue of the works of</p><h1>R. A. Lafferty</h1><p id="loading-message">Opening the catalogue and its connected records.</p><div class="progress"><span></span></div></div></div>
